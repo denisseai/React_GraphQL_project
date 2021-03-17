@@ -1,4 +1,4 @@
-const githubQuery = (pageCount, queryString) => {
+const githubQuery = (pageCount, queryString, paginationKeyword, paginationString) => {
   return{
     query: `
     {
@@ -7,16 +7,26 @@ const githubQuery = (pageCount, queryString) => {
       }
       search(query: "${queryString} user:denisseai sort:updated-desc",
               type: REPOSITORY,
-              first: ${pageCount}) {
+              ${paginationKeyword}: ${pageCount},
+              ${paginationString}) {
         repositoryCount
-        nodes {
-          ... on Repository {
-            name
-            description
-            id
-            url
-            viewerSubscription
+        edges {
+          cursor
+          node {
+            ... on Repository {
+              name
+              description
+              id
+              url
+              viewerSubscription
+            }
           }
+        }
+        pageInfo {
+          startCursor
+          endCursor
+          hasNextPage
+          hasPreviousPage
         }
       }
     }
