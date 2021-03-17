@@ -3,8 +3,10 @@ const githubQuery = {
   {
     viewer {
       login
-      starredRepositories {
-        nodes {
+    }
+    search(query: "user:denisseai sort:updated-desc", type: REPOSITORY, first: 10) {
+      nodes {
+        ... on Repository {
           name
           description
           id
@@ -13,7 +15,7 @@ const githubQuery = {
       }
     }
   }
-`,
+  `,
 };
 
 export default githubQuery;
