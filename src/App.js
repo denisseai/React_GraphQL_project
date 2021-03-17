@@ -3,6 +3,7 @@ import { useEffect, useState, useCallback } from "react";
 import query from "./Query";
 import RepoInfo from "./RepoInfo";
 import SearchBox from "./SearchBox";
+import NavButtons from "./NavButtons";
 
 function App() {
   let [userName, setUserName] = useState("");
@@ -60,13 +61,23 @@ function App() {
       <h1 className="text-primary">
         <i className="bi bi-diagram-2-fill"></i> Repos
       </h1>
-      <p> Hey there, {userName} ! below are your most recent GitHub Repos:</p>
+      <p> Hey there, {userName} ! your GitHub Repos:</p>
       <SearchBox 
         totalCount={totalCount}
         pageCount={pageCount}
         queryString={queryString}
         onTotalChange={(myNumber) => {setPageCount(myNumber)}}
         onQueryChange={(myString) => {setQueryString(myString)}}
+      />
+      <NavButtons 
+        start={startCursor}
+        end={endCursor}
+        next={hasNextPage}
+        previous={hasPreviousPage}
+        onPage={(myKeyword, myString) => {
+          setPaginationKeyword(myKeyword);
+          setPaginationString(myString);
+        }}
       />
 
       { repoList && (
@@ -76,6 +87,17 @@ function App() {
           ))}
         </ul>
       )}
+      <NavButtons 
+        start={startCursor}
+        end={endCursor}
+        next={hasNextPage}
+        previous={hasPreviousPage}
+        onPage={(myKeyword, myString) => {
+          setPaginationKeyword(myKeyword);
+          setPaginationString(myString);
+        }}
+      />
+
     </div>
   );
 }
